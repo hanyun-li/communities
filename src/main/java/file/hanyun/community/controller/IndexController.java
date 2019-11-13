@@ -14,4 +14,11 @@ public class HelloController {
         return "hello";
 
     }
+
+    @GetMapping("/")
+    public String idnex(){
+        return "index";
+    }
+
+
 }
