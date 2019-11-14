@@ -3,12 +3,17 @@ package file.hanyun.community.controller;
 
 import file.hanyun.community.dto.AccessTokenDTO;
 import file.hanyun.community.dto.GithubUser;
+import file.hanyun.community.entity.User;
+import file.hanyun.community.mapper.UserMapper;
 import file.hanyun.community.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 
 /**
@@ -30,9 +35,13 @@ public class AuthorizeController {
     @Value("${github.client.uri}")
     private String clientUri;
 
+    @Autowired
+    private UserMapper userMapper;  //该报错可以忽视
+
     @RequestMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
-                           @RequestParam(name = "state") String state){
+                           @RequestParam(name = "state") String state,
+                           HttpServletRequest httpServletRequest){
 
         AccessTokenDTO accessTokenDTO = new AccessTokenDTO();
         accessTokenDTO.setClient_id(clientId);
@@ -42,8 +51,24 @@ public class AuthorizeController {
         accessTokenDTO.setState(state);
 
         String accessToken = githubProvider.getAccessToken(accessTokenDTO);
-        GithubUser user = githubProvider.getUser(accessToken);
-        System.out.print(user.getName());
-        return "index";
+        GithubUser githubUser = githubProvider.getUser(accessToken);
+
+        //判断用户是否登录成功
+        if(githubUser != null){
+            User user = new User();
+            user.setName(githubUser.getName());
+            user.setAccountId(String.valueOf(githubUser.getId()));
+            user.setToken(UUID.randomUUID().toString());
+            user.setGmtCreate(System.currentTimeMillis());
+            user.setGmtModified(user.getGmtCreate());
+            userMapper.insert(user);
+            //如果成功，将用户信息填入session中,并跳转页面
+            httpServletRequest.getSession().setAttribute("user",githubUser);
+            return "redirect:/";
+        }else {
+            //如果失败，跳转页面
+            return "redirect:/";
+        }
+
     }
 }
