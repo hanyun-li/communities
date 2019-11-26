@@ -1,5 +1,6 @@
 package file.hanyun.community.service.serviceImpl;
 
+import file.hanyun.community.dto.PaginationDTO;
 import file.hanyun.community.dto.QuestionDTO;
 import file.hanyun.community.entity.Question;
 import file.hanyun.community.entity.User;
@@ -29,12 +30,14 @@ public class QuestionDTOServiceImpl implements QuestionDTOService {
      * @return List
      */
     @Override
-    public List<QuestionDTO> getAllQuestionDTOInfo(Integer page, Integer size) {
+    public PaginationDTO getAllQuestionDTOInfo(Integer page, Integer size) {
 
         Integer offset = size * (page -1);  //获取当前页的第一个记录数索引值
+        Integer recordCount = questionMapper.selectTatolRecordCount();  //所有记录数
 
         List<Question> questions = questionMapper.getAllQuestionInfo(offset,size);
         List<QuestionDTO> questionDTOS = new ArrayList();
+        PaginationDTO paginationDTO = new PaginationDTO();
         for (Question question: questions) {
             User user = userMapper.findById(question.getCreator());
             QuestionDTO questionDTO = new QuestionDTO();
@@ -42,6 +45,10 @@ public class QuestionDTOServiceImpl implements QuestionDTOService {
             questionDTO.setUser(user);
             questionDTOS.add(questionDTO);
         }
-        return questionDTOS;
+        paginationDTO.setQuestions(questionDTOS);
+
+        paginationDTO.setPagination(recordCount,size,page);
+
+        return paginationDTO;
     }
 }

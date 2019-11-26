@@ -3,7 +3,6 @@ package file.hanyun.community.controller;
 import file.hanyun.community.entity.Question;
 import file.hanyun.community.entity.User;
 import file.hanyun.community.mapper.QuestionMapper;
-import file.hanyun.community.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
@@ -19,9 +17,6 @@ public class PublishController {
 
     @Autowired
     private QuestionMapper questionMapper;
-
-    @Autowired
-    private UserMapper userMapper;
 
     @GetMapping("/publish")
     public  String publish(){
@@ -53,22 +48,7 @@ public class PublishController {
             return "publish";
         }
 
-        User user = null;
-        Cookie[] cookies = httpServletRequest.getCookies();
-        if(cookies != null&& cookies.length != 0){
-            for (Cookie cookie:cookies) {
-                if(cookie.getName().equals("token")){
-                    String token = cookie.getValue();
-                    user = userMapper.findByToken(token);
-                    //如果数据库中存在用户登录的token，则保持登录状态
-                    if(user != null){
-                        httpServletRequest.getSession().setAttribute("user",user);
-                    }
-                    break;
-                }
-            }
-        }
-
+        User user = (User)httpServletRequest.getSession().getAttribute("user");
         if (user == null){
             model.addAttribute("error","用户未登录");
             return "publish";

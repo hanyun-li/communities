@@ -1,10 +1,8 @@
 package file.hanyun.community.service;
 
 
-import file.hanyun.community.dto.QuestionDTO;
-
-import java.util.List;
+import file.hanyun.community.dto.PaginationDTO;
 
 public interface QuestionDTOService {
-    List<QuestionDTO> getAllQuestionDTOInfo(Integer page, Integer size);
+    PaginationDTO getAllQuestionDTOInfo(Integer page, Integer size);
 }
