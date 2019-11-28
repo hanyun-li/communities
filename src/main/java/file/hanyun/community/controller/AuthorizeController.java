@@ -59,8 +59,15 @@ public class AuthorizeController {
         //判断用户是否登录成功
         if(githubUser != null){
 
+            User user1 = userMapper.findByAccountId(String.valueOf(githubUser.getId()));
+            String token = user1.getToken();
+            if(user1 != null){
+                httpServletResponse.addCookie(new Cookie("token",token));
+                httpServletRequest.getSession().setAttribute("user",githubUser);
+                return "redirect:/";
+            }
             //获取token 在数据库中查找token
-            String token = UUID.randomUUID().toString();
+            token = UUID.randomUUID().toString();
             User user = new User();
             user.setName(githubUser.getName());
             user.setAccountId(String.valueOf(githubUser.getId()));

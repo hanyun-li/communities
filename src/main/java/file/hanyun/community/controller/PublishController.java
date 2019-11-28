@@ -23,7 +23,6 @@ public class PublishController {
         return "publish";
     }
 
-
     @PostMapping("/publish")
     public String doPublish(
             @RequestParam("title") String title,
@@ -35,7 +34,7 @@ public class PublishController {
         model.addAttribute("description",description);
         model.addAttribute("tag",tag);
 
-        if(title == null || title == ""){
+        if(title == null || title.equals("")){
             model.addAttribute("titleError","标题不能为空");
             return "publish";
         }

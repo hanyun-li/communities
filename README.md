@@ -9,3 +9,11 @@
 
 ##工具
 https://git-scm.com/download     
+
+***
+运行flyway脚本命令
+mvn flyway:migrate
+
+运行mybatis ganerator
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+***

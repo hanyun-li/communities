@@ -4,6 +4,8 @@ import file.hanyun.community.dto.PaginationDTO;
 import file.hanyun.community.dto.QuestionDTO;
 import file.hanyun.community.entity.Question;
 import file.hanyun.community.entity.User;
+import file.hanyun.community.exception.CustomizeErrorCode;
+import file.hanyun.community.exception.CustomizeException;
 import file.hanyun.community.mapper.QuestionMapper;
 import file.hanyun.community.mapper.UserMapper;
 import file.hanyun.community.service.QuestionDTOService;
@@ -46,9 +48,20 @@ public class QuestionDTOServiceImpl implements QuestionDTOService {
             questionDTOS.add(questionDTO);
         }
         paginationDTO.setQuestions(questionDTOS);
-
         paginationDTO.setPagination(recordCount,size,page);
-
         return paginationDTO;
+    }
+
+    @Override
+    public QuestionDTO getById(Integer id) {
+        Question question = questionMapper.getById(id);
+        if(question == null){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOND);
+        }
+        QuestionDTO questionDTO = new QuestionDTO();
+        User user = userMapper.findById(question.getCreator());
+        questionDTO.setUser(user);
+        BeanUtils.copyProperties(question,questionDTO);
+        return questionDTO;
     }
 }

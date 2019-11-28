@@ -16,5 +16,8 @@ public interface UserMapper {
     User findByToken(String token);
 
     @Select("select * from user where id=#{id}")
-    User findById(int id);
+    User findById(Integer id);
+
+    @Select("select * from user where account_id=#{accountId}")
+    User findByAccountId(String accountId);
 }

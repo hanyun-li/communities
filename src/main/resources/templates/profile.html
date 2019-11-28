@@ -16,6 +16,51 @@
         <div class="col-lg-9 clo-md-12 clo-sm-12 clo-xs-12">
             <h2><span th:text="${sectionName}"></span></h2>
             <hr>
+            <div class="media" th:each="question,questionsStat : ${pagination.questions}">
+                <div class="media-left">
+                    <a href="#">
+                        <img height="48px"  width="48px" class="media-object img-thumbnail" th:src="${question.getUser().getAvatarUrl()}" >
+                    </a>
+                </div>
+                <div class="media-body">
+                    <a href="#">
+                        <h4 class="media-heading" th:text="${question.title}"></h4>
+                    </a>
+                    <span th:text="${question.description}"></span><br>
+                    <b class="text-desc"></b><b><span th:text="${question.commentCount}"></span></b>个回复 <b>·</b> <b><span th:text="${question.viewCount}"></span></b>次浏览 <b>·</b>
+                    <span th:text="${#dates.format(question.gmtCreate,'yyyy-MM-dd HH:mm')}"></span></span>
+                </div>
+            </div>
+            <div class="col-lg-4 clo-md-12 clo-sm-12 clo-xs-12"></div>
+            <div class="col-lg-5 clo-md-12 clo-sm-12 clo-xs-12">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li>
+                            <a th:if="${pagination.showFirstPrevious}" th:href="@{'/?currentPage=1'}" aria-label="Previous">
+                                <span aria-hidden="true">&lt;&lt;</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a th:if="${pagination.showPrevious}" th:href="@{'/?currentPage='+${pagination.currentPage - 1}}" aria-label="Previous">
+                                <span aria-hidden="true">&lt;</span>
+                            </a>
+                        </li>
+                        <li th:each="page , pagesStat : ${pagination.pages}" th:class="${pagination.currentPage == page}?'active':''" >
+                            <a th:href="@{'/?currentPage='+${page}}" th:text="${page}"></a>
+                        </li>
+                        <li>
+                            <a th:if="${pagination.showNext}" th:href="@{'/?currentPage='+${pagination.currentPage + 1}}" aria-label="Previous">
+                                <span aria-hidden="true">&gt;</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a th:if="${pagination.showEndPage}" th:href="@{'/?currentPage='+${pagination.totalPage}}" aria-label="Next">
+                                <span aria-hidden="true">&gt;&gt;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
         </div>
         <div class="col-lg-3 clo-md-12 clo-sm-12 clo-xs-12">
             <div class="list-group section">
