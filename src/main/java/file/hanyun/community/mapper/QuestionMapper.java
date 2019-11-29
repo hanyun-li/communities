@@ -30,4 +30,10 @@ public interface QuestionMapper {
 
     @Update("update question set title = #{title},description = #{description},tag = #{tag} where id = #{id}")
     void updateById(Question question);
+
+    @Update("update question set view_count = #{viewCount} where id = #{id}")
+    void updateByViewCount(@Param("viewCount") Integer viewCount,@Param("id") Integer id);
+
+    @Select("select view_count from question where id = #{id}")
+    Integer queryViewCountById(@Param("id") Integer id);
 }
