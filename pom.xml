@@ -89,6 +89,11 @@
             <artifactId>spring-boot-autoconfigure</artifactId>
             <version>2.2.1.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.7</version>
+        </dependency>
     </dependencies>
 
     <build>

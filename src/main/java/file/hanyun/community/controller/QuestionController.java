@@ -31,7 +31,7 @@ public class QuestionController {
             questionMapper.updateByViewCount(viewCount,id);
         }
         QuestionDTO questionDTO = questionDTOService.getById(id);
-        model.addAttribute("question",questionDTO);
+        model.addAttribute("question",questionDTO );
         return "question";
     }
 }
