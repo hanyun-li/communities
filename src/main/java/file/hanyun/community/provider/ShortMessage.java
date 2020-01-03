@@ -33,8 +33,9 @@ public class ShortMessage {
                 List<BasicNameValuePair> parames = new ArrayList<>();
                 parames.add(new BasicNameValuePair("Uid", "hy.li"));
                 parames.add(new BasicNameValuePair("Key", "d41d8cd98f00b204e980"));
-                parames.add(new BasicNameValuePair("smsMob", "15271730978"));
-                parames.add(new BasicNameValuePair("smsText", "8888"));
+//                13872235241
+                parames.add(new BasicNameValuePair("smsMob", "13872235241"));
+                parames.add(new BasicNameValuePair("smsText", "Welcome JunJun!"));
 
                 HttpPost httpPost = new HttpPost(uri);
                 httpPost.setEntity(new UrlEncodedFormEntity(parames, "UTF-8"));
