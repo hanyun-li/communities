@@ -11,7 +11,7 @@ import java.io.IOException;
 
 /**
  * author:hanyun.li
- * createTine:2019/11/13
+ * createTime:2019/11/13
  */
 @Component
 public class GithubProvider {
